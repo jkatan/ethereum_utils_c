@@ -21,6 +21,7 @@ size_t eth_jrpc_client_callback(void* buffer, size_t size, size_t nmemb, void* u
 
 void eth_blockNumber(callback_params callback);
 void eth_getBlockByNumber(const char* block_number, int show_tx_details_flag, callback_params callback);
+void eth_call(const char* from, const char* to, const char* function_signature, const char* function_params[], callback_params callback);
 
 #ifdef  __cplusplus
 }

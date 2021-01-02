@@ -35,11 +35,11 @@ char* encode_eth_call_data(const char* function_signature, const char* function_
 
 	// Concatenate the function selector with the parameters encoding
 	copy_string(function_selector, encoded_call_data, 0, 9);
-	copy_string(encoded_params, encoded_call_data, 10, 10 + encoded_params_length);
+	copy_string(encoded_params, encoded_call_data, 10, 9 + encoded_params_length);
 	encoded_call_data[10 + encoded_params_length] = 0;
 
 	free(encoded_params);
-	
+
 	return encoded_call_data;
 }
 
@@ -54,7 +54,7 @@ char* encode_function_params(const char* function_signature, const char* functio
 	{
 		if (first_parenthesis_read)
 		{
-			char param_type[10] = {0};
+			char param_type[PARAM_TYPE_MAX_LENGTH] = {0};
 			size_t delimited_str_index = 0;
 			while (function_signature[index] != ',' && function_signature[index] != ')')
 			{
@@ -120,16 +120,16 @@ char* encode_function_param(const char* param_type, const char* param_value)
 	}
 	if (strcmp(param_type, "address") == 0)
 	{
-		const size_t value_length = strlen(param_value) - 2;
+		const size_t value_length = strlen(param_value) - 2; // Subtract 2 from the address length because we don't want to count the '0x' hex prefix
 		const size_t zeros_to_fill = MIN_BLOCK_SIZE - value_length - 1;
-		int i;
+		size_t i;
 		for (i = 0; i < zeros_to_fill; i++)
 		{
 			encoded_result[i] = '0';
 		}
 		while (i - zeros_to_fill < value_length)
 		{
-			encoded_result[i] = param_value[i - zeros_to_fill + 2];
+			encoded_result[i] = param_value[i - zeros_to_fill + 2]; // Add 2 because we don't want to add the '0x' prefix to the encoded result
 			i++;
 		}
 	}

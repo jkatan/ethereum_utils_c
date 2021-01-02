@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "eth_abi_utils.h"
 
 const char* provider_endpoint;
 
@@ -24,7 +25,7 @@ size_t eth_jrpc_client_callback(void* buffer, size_t size, size_t nmemb, void* u
     char* response = malloc(bytes_received + 1);
 	if (response == NULL)
 	{
-        fprintf(stderr, "Error allocating memory for the response of the request");
+        fprintf(stderr, "[eth_jrpc_client] Error allocating memory for the response of the request");
         return 0;
 	}
 
@@ -56,7 +57,7 @@ void perform_request(const char* json_data, callback_params* callback)
 
     if (response != CURLE_OK)
     {
-        fprintf(stderr, "Error processing request");
+        fprintf(stderr, "[eth_jrpc_client] Error processing request");
     }
 
     curl_easy_cleanup(handle);
@@ -77,12 +78,32 @@ void eth_getBlockByNumber(const char* block_number, int show_tx_details_flag, ca
     char* json_object = calloc(json_object_length, sizeof(char));
     if (json_object == NULL)
     {
-        fprintf(stderr, "Error allocating memory for the request");
+        fprintf(stderr, "[eth_jrpc_client] Error allocating memory for the request");
         return;
     }
 
     snprintf(json_object, json_object_length, format, block_number, details_flag);
     perform_request(json_object, &callback);
 	
+    free(json_object);
+}
+
+void eth_call(const char* from, const char* to, const char* function_signature, const char* function_params[], callback_params callback)
+{
+    char* encoded_call_data = encode_eth_call_data(function_signature, function_params);
+    const char* format = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"from\":\"%s\",\"to\":\"%s\",\"data\":\"%s\"}, \"latest\"],\"id\":1}";
+    const size_t json_object_length = strlen(format) + strlen(from) + strlen(to) + strlen(encoded_call_data);
+
+    char* json_object = calloc(json_object_length, sizeof(char));
+    if (json_object == NULL)
+    {
+        fprintf(stderr, "[eth_jrpc_client] Error allocating memory for the request");
+        return;
+    }
+
+    snprintf(json_object, json_object_length, format, from, to, encoded_call_data);
+    perform_request(json_object, &callback);
+
+    free(encoded_call_data);
     free(json_object);
 }

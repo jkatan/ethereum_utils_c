@@ -11,19 +11,16 @@ void testCallback(char* response, void* user_data)
 
 int main(int argc, char* argv[])
 {
-    eth_jrpc_client_init("https://mainnet.infura.io/v3/dc2cd880dea34528a5c8677d77b72e0a");
+    eth_jrpc_client_init("https://ropsten.infura.io/v3/dc2cd880dea34528a5c8677d77b72e0a");
 
-    /* callback_params callback;
+    const char* call_params[] = { "0xAdA4d90D22C41eBC084354808E71e91F9b54137D" };
+    const char* function_signature = "balanceOf(address)";
+    callback_params callback;
     int a = 5000;
     callback.user_callback = testCallback;
     callback.user_callback_data = &a;
-    eth_getBlockByNumber("latest", 0, callback);
+    eth_call("0xAdA4d90D22C41eBC084354808E71e91F9b54137D", "0xc200016ecca715928794165fd41a02b55a5115bd", function_signature, call_params, callback);
+    eth_jrpc_client_cleanup();
 
-    eth_jrpc_client_cleanup(); */
-
-    const char* call_params[] = {"0xAdA4d90D22C41eBC084354808E71e91F9b54137D"};
-    const char* function_signature = "balanceOf(address)";
-    char* encoded_call_data = encode_eth_call_data(function_signature, call_params);
-    printf("Encoded call data: %s", encoded_call_data);
     return 0;
 }
