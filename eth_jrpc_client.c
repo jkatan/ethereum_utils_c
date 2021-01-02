@@ -86,8 +86,3 @@ void eth_getBlockByNumber(const char* block_number, int show_tx_details_flag, ca
 	
     free(json_object);
 }
-
-void eth_call(transaction_fields tx, callback_params callback)
-{
-	// TO DO
-}
