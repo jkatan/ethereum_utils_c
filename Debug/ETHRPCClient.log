@@ -1,4 +1,4 @@
 ﻿  eth_abi_utils.c
-C:\Users\Johnathan\Desktop\Development\C++ projects\ETHJsonRPCClient\ETHRPCClient\ETHRPCClient\eth_abi_utils.c(39,8): warning C4101: 'encoded_function_params': unreferenced local variable
-C:\Users\Johnathan\Desktop\Development\C++ projects\ETHJsonRPCClient\ETHRPCClient\ETHRPCClient\eth_abi_utils.c(83,28): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Johnathan\Desktop\Development\C++ projects\ETHJsonRPCClient\ETHRPCClient\ETHRPCClient\eth_abi_utils.c(125,17): warning C4018: '<': signed/unsigned mismatch
+  helloWorld.cpp
   ETHRPCClient.vcxproj -> C:\Users\Johnathan\Desktop\Development\C++ projects\ETHJsonRPCClient\ETHRPCClient\Debug\ETHRPCClient.exe

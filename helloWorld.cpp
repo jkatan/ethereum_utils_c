@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 
     const char* call_params[] = {"0xAdA4d90D22C41eBC084354808E71e91F9b54137D"};
     const char* function_signature = "balanceOf(address)";
-    encode_eth_call_data(function_signature, call_params);
-
+    char* encoded_call_data = encode_eth_call_data(function_signature, call_params);
+    printf("Encoded call data: %s", encoded_call_data);
     return 0;
 }
