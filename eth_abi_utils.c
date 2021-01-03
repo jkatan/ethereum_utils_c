@@ -34,8 +34,8 @@ char* encode_eth_call_data(const char* function_signature, const char* function_
 	}
 
 	// Concatenate the function selector with the parameters encoding
-	copy_string(function_selector, encoded_call_data, 0, 9);
-	copy_string(encoded_params, encoded_call_data, 10, 9 + encoded_params_length);
+	copy_string(function_selector, encoded_call_data, 0, FUNCTION_SELECTOR_LENGTH - 1);
+	copy_string(encoded_params, encoded_call_data, FUNCTION_SELECTOR_LENGTH, FUNCTION_SELECTOR_LENGTH + encoded_params_length);
 	encoded_call_data[10 + encoded_params_length] = 0;
 
 	free(encoded_params);
