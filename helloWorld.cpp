@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 {
     eth_jrpc_client_init("https://ropsten.infura.io/v3/dc2cd880dea34528a5c8677d77b72e0a");
 
-    const char* call_params[] = { "true", "1000000000", "0xA1720a0E5859f2165fF651744d84B50f03427a09" };
+    const char* call_params[] = { "true", "7", "0xA1720a0E5859f2165fF651744d84B50f03427a09" };
     const char* function_signature = "echoAll(bool,uint256,address)";
     callback_params callback;
     int a = 5000;

@@ -168,7 +168,7 @@ char* encode_uint_type(const char* value_to_encode)
 
 	char value_to_hex[MIN_BLOCK_SIZE] = { 0 };
 	int value = atoi(value_to_encode);
-	snprintf(value_to_hex, MIN_BLOCK_SIZE, "%x", value);
+	snprintf(value_to_hex, MIN_BLOCK_SIZE, "%02x", value);
 
 	pad_encoding_zeros(value_to_hex, strlen(value_to_hex), encoded_result);
 
