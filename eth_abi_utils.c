@@ -18,7 +18,7 @@ char* encode_eth_call_data(const char* function_signature, const char* function_
 	char function_selector[11] = { '0', 'x' };
 	for (int i = 0; i < 4; ++i)
 	{
-		snprintf(function_selector + i*2 + 2, 3, "%x", hash[i]);
+		snprintf(function_selector + i*2 + 2, 3, "%02x", hash[i]);
 	}
 
 	// Encode the function parameters
@@ -54,7 +54,7 @@ char* encode_function_params(const char* function_signature, const char* functio
 	{
 		if (first_parenthesis_read)
 		{
-			char param_type[PARAM_TYPE_MAX_LENGTH] = {0};
+			char param_type[PARAM_TYPE_MAX_LENGTH] = { 0 };
 			size_t delimited_str_index = 0;
 			while (function_signature[index] != ',' && function_signature[index] != ')')
 			{
@@ -63,6 +63,10 @@ char* encode_function_params(const char* function_signature, const char* functio
 				delimited_str_index++;
 			}
 			char* encoded_function_param = encode_function_param(param_type, function_parameters[params_read]);
+			if (encoded_function_param == NULL)
+			{
+				return NULL;
+			}
 			size_t new_block_size = strlen(encoded_function_param);
 			params_read++;
 			if (function_signature[index] == ')')
@@ -112,28 +116,78 @@ char* encode_function_params(const char* function_signature, const char* functio
 
 char* encode_function_param(const char* param_type, const char* param_value)
 {
+	if (strcmp(param_type, "address") == 0)
+	{
+		return encode_address_type(param_value);
+	}
+
+	if (starts_with(param_type, "uint"))
+	{
+		return encode_uint_type(param_value);
+	}
+
+	if (strcmp(param_type, "bool") == 0)
+	{
+		if (strcmp(param_value, "true") == 0)
+		{
+			return encode_uint_type("1");
+		}
+
+		if (strcmp(param_value, "false") == 0)
+		{
+			return encode_uint_type("0");
+		}
+	}
+
+	fprintf(stderr, "[eth_abi_utils] Invalid parameter type");
+	return NULL;
+}
+
+char* encode_address_type(const char* value_to_encode)
+{
 	char* encoded_result = calloc(MIN_BLOCK_SIZE, sizeof(char));
 	if (encoded_result == NULL)
 	{
 		fprintf(stderr, "[eth_abi_utils] Error allocating memory");
 		return NULL;
 	}
-	if (strcmp(param_type, "address") == 0)
-	{
-		const size_t value_length = strlen(param_value) - 2; // Subtract 2 from the address length because we don't want to count the '0x' hex prefix
-		const size_t zeros_to_fill = MIN_BLOCK_SIZE - value_length - 1;
-		size_t i;
-		for (i = 0; i < zeros_to_fill; i++)
-		{
-			encoded_result[i] = '0';
-		}
-		while (i - zeros_to_fill < value_length)
-		{
-			encoded_result[i] = param_value[i - zeros_to_fill + 2]; // Add 2 because we don't want to add the '0x' prefix to the encoded result
-			i++;
-		}
-	}
+
+	pad_encoding_zeros(value_to_encode + 2, strlen(value_to_encode) - 2, encoded_result);
+
 	return encoded_result;
+}
+
+char* encode_uint_type(const char* value_to_encode)
+{
+	char* encoded_result = calloc(MIN_BLOCK_SIZE, sizeof(char));
+	if (encoded_result == NULL)
+	{
+		fprintf(stderr, "[eth_abi_utils] Error allocating memory");
+		return NULL;
+	}
+
+	char value_to_hex[MIN_BLOCK_SIZE] = { 0 };
+	int value = atoi(value_to_encode);
+	snprintf(value_to_hex, MIN_BLOCK_SIZE, "%x", value);
+
+	pad_encoding_zeros(value_to_hex, strlen(value_to_hex), encoded_result);
+
+	return encoded_result;
+}
+
+void pad_encoding_zeros(const char* value_to_encode, size_t value_length, char* output)
+{
+	const size_t zeros_to_fill = MIN_BLOCK_SIZE - value_length - 1;
+	size_t i;
+	for (i = 0; i < zeros_to_fill; i++)
+	{
+		output[i] = '0';
+	}
+	while (i - zeros_to_fill < value_length)
+	{
+		output[i] = value_to_encode[i - zeros_to_fill];
+		i++;
+	}
 }
 
 void copy_string(const char* source, char* dest, size_t from_index, size_t to_index)
@@ -144,4 +198,19 @@ void copy_string(const char* source, char* dest, size_t from_index, size_t to_in
 		dest[from_index + current_index] = source[current_index];
 		current_index++;
 	}
+}
+
+int starts_with(const char* string, const char* prefix)
+{
+	size_t index = 0;
+	while (prefix[index] != 0 && string[index] != 0)
+	{
+		if (prefix[index] != string[index])
+		{
+			return 0;
+		}
+		index++;
+	}
+
+	return index < strlen(prefix) ? 0 : 1;
 }
