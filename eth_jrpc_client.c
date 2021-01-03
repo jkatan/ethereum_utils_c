@@ -22,7 +22,7 @@ size_t eth_jrpc_client_callback(void* buffer, size_t size, size_t nmemb, void* u
     const size_t bytes_received = size * nmemb;
     callback_params* callback_data = (callback_params*)userp;
 
-    char* response = malloc(bytes_received + 1);
+    char* response = malloc((bytes_received + 1) * sizeof(char));
 	if (response == NULL)
 	{
         fprintf(stderr, "[eth_jrpc_client] Error allocating memory for the response of the request");

@@ -15,7 +15,7 @@ char* encode_eth_call_data(const char* function_signature, const char* function_
 	memset((char*)&context, 0, sizeof(SHA3_CTX));
 
 	// Store 4 leftmost bytes of the hash in a string
-	char function_selector[11] = { '0', 'x' };
+	char function_selector[FUNCTION_SELECTOR_LENGTH + 1] = { '0', 'x' };
 	for (int i = 0; i < 4; ++i)
 	{
 		snprintf(function_selector + i*2 + 2, 3, "%02x", hash[i]);
@@ -25,7 +25,7 @@ char* encode_eth_call_data(const char* function_signature, const char* function_
 	char* encoded_params = encode_function_params(function_signature, function_parameters);
 	const size_t encoded_params_length = strlen(encoded_params);
 
-	char* encoded_call_data = malloc((10 + encoded_params_length + 1) * sizeof(char));
+	char* encoded_call_data = malloc((FUNCTION_SELECTOR_LENGTH + encoded_params_length + 1) * sizeof(char));
 	if (encoded_call_data == NULL)
 	{
 		fprintf(stderr, "[eth_abi_utils] Error allocating memory");

@@ -7,6 +7,7 @@ extern "C" {
 
 #define MIN_BLOCK_SIZE 65
 #define PARAM_TYPE_MAX_LENGTH 10
+#define FUNCTION_SELECTOR_LENGTH 10
 	
 char* encode_eth_call_data(const char* function_signature, const char* function_parameters[]);
 char* encode_function_params(const char* function_signature, const char* function_parameters[]);
