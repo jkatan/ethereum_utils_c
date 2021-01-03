@@ -145,12 +145,12 @@
     <ClCompile Include="eth_abi_utils.c" />
     <ClCompile Include="eth_jrpc_client.c" />
     <ClCompile Include="helloWorld.cpp" />
-    <ClCompile Include="keccak256.c" />
+    <ClCompile Include="external_libs\keccak256.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eth_jrpc_client.h" />
     <ClInclude Include="eth_abi_utils.h" />
-    <ClInclude Include="keccak256.h" />
+    <ClInclude Include="external_libs\keccak256.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

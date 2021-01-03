@@ -21,10 +21,10 @@
     <ClCompile Include="eth_jrpc_client.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="keccak256.c">
+    <ClCompile Include="eth_abi_utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="eth_abi_utils.c">
+    <ClCompile Include="external_libs\keccak256.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClInclude Include="eth_jrpc_client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="keccak256.h">
+    <ClInclude Include="eth_abi_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="eth_abi_utils.h">
+    <ClInclude Include="external_libs\keccak256.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

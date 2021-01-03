@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "eth_abi_utils.h"
-#include "keccak256.h"
+#include "external_libs/keccak256.h"
 
 char* encode_eth_call_data(const char* function_signature, const char* function_parameters[])
 {
