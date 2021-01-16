@@ -1,7 +1,7 @@
-#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "eth_abi_utils.h"
+#include "string_utils.h"
 #include "external_libs/keccak256.h"
 
 char* encode_eth_call_data(const char* function_signature, const char* function_parameters[])
@@ -188,29 +188,4 @@ void pad_encoding_zeros(const char* value_to_encode, size_t value_length, char* 
 		output[i] = value_to_encode[i - zeros_to_fill];
 		i++;
 	}
-}
-
-void copy_string(const char* source, char* dest, size_t from_index, size_t to_index)
-{
-	size_t current_index = 0;
-	while (source[current_index] != 0 && (from_index + current_index) <= to_index)
-	{
-		dest[from_index + current_index] = source[current_index];
-		current_index++;
-	}
-}
-
-int starts_with(const char* string, const char* prefix)
-{
-	size_t index = 0;
-	while (prefix[index] != 0 && string[index] != 0)
-	{
-		if (prefix[index] != string[index])
-		{
-			return 0;
-		}
-		index++;
-	}
-
-	return index < strlen(prefix) ? 0 : 1;
 }

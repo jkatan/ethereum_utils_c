@@ -27,6 +27,12 @@
     <ClCompile Include="external_libs\keccak256.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="eth_rlp_utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="string_utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eth_jrpc_client.h">
@@ -36,6 +42,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="external_libs\keccak256.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eth_rlp_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="string_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

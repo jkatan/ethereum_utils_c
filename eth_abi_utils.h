@@ -1,5 +1,5 @@
-#ifndef ETH_ABI
-#define ETH_ABI
+#ifndef ETH_ABI_UTILS
+#define ETH_ABI_UTILS
 
 #ifdef  __cplusplus
 extern "C" {
@@ -16,8 +16,6 @@ char* encode_address_type(const char* value_to_encode);
 char* encode_uint_type(const char* value_to_encode);
 
 void pad_encoding_zeros(const char* value_to_encode, size_t value_length, char* output);
-void copy_string(const char* source, char* dest, size_t from_index, size_t to_index);
-int starts_with(const char* string, const char* prefix);
 
 #ifdef  __cplusplus
 }
