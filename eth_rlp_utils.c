@@ -110,20 +110,22 @@ char* rlp_add_encoding_prefix_length_bytes(unsigned int encoding_constant, unsig
 	snprintf(number_of_bytes_hex_string, MAX_LENGTH_HEX_SIZE, "%02X", number_of_bytes);
 
 	const size_t number_of_bytes_hex_string_length = strlen(number_of_bytes_hex_string);
-	const unsigned int first_byte = encoding_constant + (number_of_bytes_hex_string_length / 2);
-	char encoding_prefix[3];
-	snprintf(encoding_prefix, 3, "%02X", first_byte);
+	char* encoding_prefix = rlp_add_encoding_prefix_single_byte(encoding_constant, number_of_bytes_hex_string_length / 2, number_of_bytes_hex_string, number_of_bytes_hex_string_length);
 
-	const size_t encoded_string_length = 3 + number_of_bytes_hex_string_length + encoding_suffix_length;
+	const unsigned int encoding_prefix_length = strlen(encoding_prefix);
+	const size_t encoded_string_length = encoding_prefix_length + encoding_suffix_length + 1;
 	char* encoded_string = malloc(encoded_string_length * sizeof(char));
 	if (encoded_string == NULL)
 	{
 		fprintf(stderr, "[eth_rlp_utils] Error allocating memory");
 		return NULL;
 	}
-	copy_string(encoding_prefix, encoded_string, 0, 1);
-	copy_string(number_of_bytes_hex_string, encoded_string, 2, number_of_bytes_hex_string_length + 1);
-	copy_string(encoding_suffix, encoded_string, number_of_bytes_hex_string_length + 2, encoded_string_length - 2);
+
+	copy_string(encoding_prefix, encoded_string, 0, encoding_prefix_length - 1);
+	free(encoding_prefix);
+
+	copy_string(encoding_suffix, encoded_string, encoding_prefix_length, encoded_string_length - 2);
 	encoded_string[encoded_string_length - 1] = 0;
+
 	return encoded_string;
 }
