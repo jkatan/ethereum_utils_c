@@ -242,3 +242,14 @@ void keccak_final(SHA3_CTX* ctx, unsigned char* result)
         me64_to_le_str(result, ctx->hash, digest_length);
     }
 }
+
+void perform_keccak_hash(const uint8_t* data, uint16_t length, uint8_t* result) {
+
+    SHA3_CTX context;
+    keccak_init(&context);
+    keccak_update(&context, (const unsigned char*)data, (size_t)length);
+    keccak_final(&context, (unsigned char*)result);
+
+    // Clear out the contents of what we hashed (in case it was secret)
+    memset((char*)&context, 0, sizeof(SHA3_CTX));
+}

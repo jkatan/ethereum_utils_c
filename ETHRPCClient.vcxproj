@@ -145,7 +145,7 @@
     <ClCompile Include="eth_abi_utils.c" />
     <ClCompile Include="eth_jrpc_client.c" />
     <ClCompile Include="eth_rlp_utils.c" />
-    <ClCompile Include="helloWorld.cpp" />
+    <ClCompile Include="external_libs\uECC.c" />
     <ClCompile Include="external_libs\keccak256.c" />
     <ClCompile Include="string_utils.c" />
   </ItemGroup>
@@ -154,7 +154,14 @@
     <ClInclude Include="eth_abi_utils.h" />
     <ClInclude Include="eth_rlp_utils.h" />
     <ClInclude Include="external_libs\keccak256.h" />
+    <ClInclude Include="external_libs\types.h" />
+    <ClInclude Include="external_libs\uECC.h" />
+    <ClInclude Include="external_libs\uECC_vli.h" />
     <ClInclude Include="string_utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="external_libs\curve-specific.inc" />
+    <None Include="external_libs\platform-specific.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

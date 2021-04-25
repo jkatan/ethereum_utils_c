@@ -34,6 +34,7 @@ char* rlp_encode_hex_string(const char* hex_string_to_encode)
 
 	return encoded_string;
 }
+
 char* rlp_encode_hex_string_list(const char* hex_string_list_to_encode[], unsigned int list_elements_amount)
 {
 	unsigned int current_encoded_string_length = 0;

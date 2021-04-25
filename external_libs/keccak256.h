@@ -46,6 +46,8 @@ extern "C" {
     void keccak_update(SHA3_CTX* ctx, const unsigned char* msg, uint16_t size);
     void keccak_final(SHA3_CTX* ctx, unsigned char* result);
 
+    void perform_keccak_hash(const uint8_t* data, uint16_t length, uint8_t* result);
+
 
 #ifdef __cplusplus
 }

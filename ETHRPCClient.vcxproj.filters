@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="helloWorld.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="eth_jrpc_client.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -31,6 +28,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="string_utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="external_libs\uECC.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,5 +50,22 @@
     <ClInclude Include="string_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="external_libs\uECC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="external_libs\uECC_vli.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="external_libs\types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="external_libs\platform-specific.inc">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="external_libs\curve-specific.inc">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

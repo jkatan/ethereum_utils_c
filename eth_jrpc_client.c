@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "eth_abi_utils.h"
+#include "eth_rlp_utils.h"
+#include "external_libs/keccak256.h"
+#include "external_libs/uECC.h"
 
 const char* provider_endpoint;
 
@@ -106,4 +109,75 @@ void eth_call(const char* from, const char* to, const char* function_signature, 
 
     free(encoded_call_data);
     free(json_object);
+}
+
+void eth_sign_and_send_transaction(const transaction* tx, unsigned int chain_id, const char* private_key)
+{
+    char chain_id_hex[3];
+    snprintf(chain_id_hex, 3, "%02X", chain_id);
+
+    const char* fields_to_encode[] = { tx->nonce, tx->gas_price, tx->gas_limit, tx->to_address, tx->value, tx->message_call_data, chain_id_hex, "", "" };
+    char* encoded_string = rlp_encode_hex_string_list(fields_to_encode, 9);
+    printf("Encoded string: %s\n", encoded_string);
+
+    unsigned int bytes_amount = strlen(encoded_string) / 2;
+    unsigned char* encoded_hex_array = hex_string_to_hex_array(encoded_string, bytes_amount);
+	if (encoded_hex_array == NULL)
+	{
+        free(encoded_string);
+        return;
+	}
+
+    free(encoded_string);
+	
+    unsigned char hash[32];
+    perform_keccak_hash(encoded_hex_array, bytes_amount, hash);
+
+    char hash_string[65] = {0};
+    for (int i = 0; i < 32; ++i)
+    {
+        snprintf(hash_string + i * 2, 3, "%02x", hash[i]);
+    }
+    printf("Hash string: %s\n", hash_string);
+
+    unsigned char* private_key_hex_array = hex_string_to_hex_array(private_key, strlen(private_key) / 2);
+    unsigned char transaction_signature[64];
+    uECC_sign((const uint8_t*)private_key_hex_array, (const uint8_t*) hash, 32, transaction_signature, uECC_secp256k1());
+
+    char signature_string[129] = { 0 };
+    for (int i = 0; i < 64; ++i)
+    {
+        snprintf(signature_string + i * 2, 3, "%02x", transaction_signature[i]);
+    }
+    printf("signature string: %s\n", signature_string);
+
+    char r[65] = { 0 };
+    char s[65] = { 0 };
+    for (int i = 0; i < 64; i++)
+    {
+        r[i] = signature_string[i];
+        s[i] = signature_string[i + 64];
+    }
+
+    //v = (s % 2) + chain_id * 2 + 35
+}
+
+unsigned char* hex_string_to_hex_array(const char* hex_string, unsigned int bytes_amount)
+{
+    unsigned char* encoded_hex_array = malloc(bytes_amount);
+    if (encoded_hex_array == NULL)
+    {
+        fprintf(stderr, "[eth_jrpc_client] Error allocating memory for the request");
+        return NULL;
+    }
+
+    for (int i = 0; i < bytes_amount * 2; i += 2)
+    {
+        char encoded_hex_elem[3] = { 0 };
+        encoded_hex_elem[0] = hex_string[i];
+        encoded_hex_elem[1] = hex_string[i + 1];
+        encoded_hex_array[(1 + i) / 2] = (unsigned char)strtol(encoded_hex_elem, NULL, 16);
+    }
+
+    return encoded_hex_array;
 }
